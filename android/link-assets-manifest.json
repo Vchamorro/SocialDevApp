@@ -1,0 +1,53 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Caveat-Bold.ttf",
+      "sha1": "e71feaec30e28858890521f4116b468c44efec08"
+    },
+    {
+      "path": "assets/fonts/Caveat-Medium.ttf",
+      "sha1": "87a6e053561e2e4fe46ec1a5bde939c7852bb279"
+    },
+    {
+      "path": "assets/fonts/Caveat-Regular.ttf",
+      "sha1": "c3c969c44a97760dd2dfd01c452976c725307b42"
+    },
+    {
+      "path": "assets/fonts/Caveat-SemiBold.ttf",
+      "sha1": "42b0a68e442e972219b83c8329e83d5c27f6a1a0"
+    },
+    {
+      "path": "assets/fonts/Caveat-VariableFont_wght.ttf",
+      "sha1": "82b10abbb30f9644797aada1802e9da7784e464e"
+    },
+    {
+      "path": "assets/fonts/LobsterTwo-Bold.ttf",
+      "sha1": "22d16751379386a58202275f3cfcf9e51bc32a80"
+    },
+    {
+      "path": "assets/fonts/LobsterTwo-BoldItalic.ttf",
+      "sha1": "7191e615e73f4780d951913f1a90fd0ea5a0deac"
+    },
+    {
+      "path": "assets/fonts/LobsterTwo-Italic.ttf",
+      "sha1": "ec156cb8233328a591257a69bfa6ba99b2a0cd5f"
+    },
+    {
+      "path": "assets/fonts/LobsterTwo-Regular.ttf",
+      "sha1": "1f9ffb9981ee8cc365b1ab1f1370421d62a36301"
+    },
+    {
+      "path": "assets/fonts/Satisfy-Regular.ttf",
+      "sha1": "fd2f096e9d0cd82b9f8e191d7f73167176d0f729"
+    },
+    {
+      "path": "assets/fonts/TiltPrism-Regular-VariableFont_XROT,YROT.ttf",
+      "sha1": "a01c01ff32fb83417e43114b61d839df29570674"
+    },
+    {
+      "path": "assets/fonts/TiltPrism-Regular.ttf",
+      "sha1": "63aef8b9b8b0b8ad549e7c894e6470ea971a3add"
+    }
+  ]
+}
