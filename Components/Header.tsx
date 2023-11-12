@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import images from "../utils/images";
 
 export const Header = (): JSX.Element => {
     return (
@@ -6,6 +7,9 @@ export const Header = (): JSX.Element => {
             <Text style={styles.headText}>
                 SocialDEV
             </Text>
+            <TouchableOpacity>
+                <Image source={images.header.loginImage} style={{ width: 30, height: 30 }}></Image>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -13,7 +17,7 @@ export const Header = (): JSX.Element => {
 const styles = StyleSheet.create({
     head: {
         height: 75,
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'black',

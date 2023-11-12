@@ -6,6 +6,7 @@
  */
 
 import { Header } from "./Components/Header";
+import { Footer } from "./Components/Footer";
 import { Navigation } from "./navigation/Navigation";
 import { SafeAreaView } from "react-native"
 
@@ -15,6 +16,7 @@ function App(): JSX.Element {
     <SafeAreaView style={{ flex: 1 }}>
       <Header />
       <Navigation />
+      <Footer />
     </SafeAreaView>
   )
 }
