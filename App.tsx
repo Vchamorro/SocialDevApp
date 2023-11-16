@@ -5,17 +5,22 @@
  * @format
  */
 
-import {Header} from './Components/Header';
-import {Navigation} from './navigation/Navigation';
-import {SafeAreaView} from 'react-native';
+import { Header } from "./Components/Header";
+import { Footer } from "./Components/Footer";
+import { Navigation } from "./navigation/Navigation";
+import { SafeAreaView } from "react-native"
+
 
 function App(): JSX.Element {
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Header />
       <Navigation />
+      <Footer />
     </SafeAreaView>
-  );
+  )
 }
+
+
 
 export default App;
