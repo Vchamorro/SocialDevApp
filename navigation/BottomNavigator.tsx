@@ -14,15 +14,15 @@ export const BottomNavigator = () => {
 
     });
     return (
-        <Tab.Navigator screenOptions={{ tabBarStyle:{height:70}, tabBarInactiveBackgroundColor: 'black', tabBarActiveBackgroundColor: 'black', tabBarActiveTintColor: 'white', tabBarLabel: () => null, }}>
+        <Tab.Navigator screenOptions={{ tabBarStyle: { height: 70 }, headerShown:false, tabBarInactiveBackgroundColor: 'black', tabBarActiveBackgroundColor: 'black', tabBarActiveTintColor: 'white', tabBarLabel: () => null, }}>
             <Tab.Screen
                 name="Home"
                 component={Home}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <TouchableOpacity>
-                            <Image source={images.footer.homeImage} style={{ width: 40, height: 40 }} />
-                        </TouchableOpacity>
+
+                        <Image source={images.footer.homeImage} style={{ width: 40, height: 40 }} />
+
                     ),
                 }} />
             <Tab.Screen
@@ -30,9 +30,9 @@ export const BottomNavigator = () => {
                 component={AddPost}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <TouchableOpacity>
-                            <Image source={images.footer.addImage} style={{ width: 40, height: 40 }} />
-                        </TouchableOpacity>
+
+                        <Image source={images.footer.addImage} style={{ width: 40, height: 40 }} />
+
                     ),
                 }}
             />
@@ -41,9 +41,9 @@ export const BottomNavigator = () => {
                 component={UserProfile}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <TouchableOpacity>
-                            <Image source={images.footer.userImage} style={{ width: 40, height: 40 }} />
-                        </TouchableOpacity>
+
+                        <Image source={images.footer.userImage} style={{ width: 40, height: 40 }} />
+
                     ),
                 }}
             />
