@@ -5,7 +5,7 @@ export const Header = (): JSX.Element => {
     return (
         <View style={styles.head}>
             <Text style={styles.headText}>
-                SocialDEV
+                SocialDev
             </Text>
             <TouchableOpacity>
                 <Image source={images.header.loginImage} style={{ width: 30, height: 30 }}></Image>

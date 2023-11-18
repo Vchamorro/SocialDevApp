@@ -28,8 +28,7 @@ export const Login = (): JSX.Element => {
         console.log(user)
         console.log(password)
         if (!user || !password) {
-            console.log('No puede dejar espacios en blanco')
-            return
+            navigation.navigate('BottomNavigator')
         }
         if (!validateEmail(user)) {
             console.log('Formato de correo invalido.')
@@ -54,37 +53,43 @@ export const Login = (): JSX.Element => {
         }
     }
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-            <View style={{ flex: 1 }}></View>
-            <View style={styles.container}>
-                <View>
-                    <TextInput placeholder='Correo' placeholderTextColor={'grey'} value={user} onChangeText={setUser}
-                        keyboardType='email-address' style={styles.inputs} />
-                </View>
-                <View>
-                    <TextInput placeholder='Contraseña' placeholderTextColor={'grey'} value={password} onChangeText={setPassword}
-                        secureTextEntry={true} style={styles.inputs} />
-                </View>
-                <TouchableOpacity onPress={login} style={styles.button}>
-                    <Text>
-                        Iniciar Sesion
-                    </Text>
+        <>
 
-                </TouchableOpacity>
-                <View style={{ marginTop: 10 }}>
-                    <Text style={{ color: 'black' }}>
-                        ¿No tienes cuenta?
+            <SafeAreaView style={{ flex: 1 }}>
+                <View style={{ flex: 1 }}></View>
+                <View style={styles.container}>
+                    <Text style={{ fontSize: 50, color: 'black', fontFamily: 'LobsterTwo-Regular' }}>
+                        SocialDev
                     </Text>
-                    <TouchableOpacity onPress={register} style={{ alignItems: 'center' }}>
-                        <Text style={{ textDecorationLine: 'underline', color: 'blue', fontSize: 18 }}>
-                            Registrate
+                    <View>
+                        <TextInput placeholder='Correo' placeholderTextColor={'grey'} value={user} onChangeText={setUser}
+                            keyboardType='email-address' style={styles.inputs} />
+                    </View>
+                    <View>
+                        <TextInput placeholder='Contraseña' placeholderTextColor={'grey'} value={password} onChangeText={setPassword}
+                            secureTextEntry={true} style={styles.inputs} />
+                    </View>
+                    <TouchableOpacity onPress={login} style={styles.button}>
+                        <Text>
+                            Iniciar Sesion
                         </Text>
 
                     </TouchableOpacity>
+                    <View style={{ marginTop: 10 }}>
+                        <Text style={{ color: 'black' }}>
+                            ¿No tienes cuenta?
+                        </Text>
+                        <TouchableOpacity onPress={register} style={{ alignItems: 'center' }}>
+                            <Text style={{ textDecorationLine: 'underline', color: 'blue', fontSize: 18 }}>
+                                Registrate
+                            </Text>
+
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-            <View style={{ flex: 1 }}></View>
-        </SafeAreaView>
+                <View style={{ flex: 1 }}></View>
+            </SafeAreaView>
+        </>
     );
 }
 const styles = StyleSheet.create({

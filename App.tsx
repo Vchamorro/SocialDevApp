@@ -16,7 +16,6 @@ function App(): JSX.Element {
     <SafeAreaView style={{ flex: 1 }}>
       <Header />
       <Navigation />
-      <Footer />
     </SafeAreaView>
   )
 }
