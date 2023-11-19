@@ -15,22 +15,18 @@ import {
     useState,
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Header } from '../Components/Header';
 
-export const Home = (): JSX.Element => {
+export const AddPost = (): JSX.Element => {
 
     return (
-        <>
-            <Header />
-            <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-                <View style={{ flex: 1 }}></View>
-                <View style={styles.container}>
-                    <View style={{ marginTop: 10 }}>
-                    </View>
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+            <View style={{ flex: 1 }}></View>
+            <View style={styles.container}>
+                <View style={{ marginTop: 10 }}>
                 </View>
-                <View style={{ flex: 1 }}></View>
-            </SafeAreaView>
-        </>
+            </View>
+            <View style={{ flex: 1 }}></View>
+        </SafeAreaView>
     );
 }
 const styles = StyleSheet.create({
