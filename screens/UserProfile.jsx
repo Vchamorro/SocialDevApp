@@ -16,7 +16,7 @@ import {
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-export const UserProfile = (): JSX.Element => {
+export const UserProfile = () => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>

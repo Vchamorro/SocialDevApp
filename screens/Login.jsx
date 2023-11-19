@@ -16,17 +16,18 @@ import {
     useState,
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Formik, Form, Field, yupToFormErrors } from 'formik';
+import { Formik, Form, Field, yupToFormErrors, useFormik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { userApi } from '../api/userApi';
 
-export const Login = (): JSX.Element => {
+
+export const Login = ()=> {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const navigation = useNavigation()
     const adminUser = {
         email: 'Admin@gmail.com',
-        password: '1234'
+        password: '12345678'
     }
     const loginValidationSchema = Yup.object().shape({
         email: Yup
@@ -35,42 +36,23 @@ export const Login = (): JSX.Element => {
             .required('El campo correo es requerido'),
         password: Yup
             .string()
-            .min(8, ({ min }) => `La contraseña debe tener minimo ${min} caracteres`)
-            .max(15)
             .required('El campo contraseña es requerido'),
     })
 
-    const consultarApio = async () => {
-        await userApi.get('')
+    const consultarApi = async () => {
+        const response = await userApi.get('http://192.168.0.16:8000/api/users')
+        console.log(response.data)
     }
-    const login = () => {
-        console.log(email)
-        console.log(password)
-        // if (!email || !password) {
-        //     console.log('Ingrese datos porfavor.')
-        //     return
-        // }
-        // if (!validateEmail(email)) {
-        //     console.log('Formato de correo invalido.')
-        //     return
-        // }
-        // if (email === adminUser.email && password === adminUser.password) {
-        //     navigation.navigate('BottomNavigator')
-        // } else {
-        //     console.log('Credenciales incorrectas.')
-        // }
+    const login = (values, formikHelpers) => {
+        console.log(values.email)
+        console.log(values.password)
+        console.log('me ejecute')
+        navigation.navigate('BottomNavigator')
+
+        formikHelpers.setSubmitting(false)
     }
     const register = () => {
         navigation.navigate('Register')
-    }
-    const validateEmail = (email: string) => {
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-        if (reg.test(email) === false) {
-            return false;
-        }
-        else {
-            return true
-        }
     }
     return (
         <>
@@ -79,13 +61,17 @@ export const Login = (): JSX.Element => {
                     email: '',
                     password: ''
                 }}
-                onSubmit={values => Alert.alert(JSON.stringify(values))}
+                onSubmit={(values, formikHelpers) => login(values, formikHelpers)}
                 validationSchema={loginValidationSchema}>
-                {({ values, handleChange, handleBlur, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
+                {({ values, handleChange, handleBlur, errors, setFieldTouched,
+                    touched, isValid, handleSubmit }) => (
                     <SafeAreaView style={{ flex: 1 }}>
                         <View style={{ flex: 1 }}></View>
                         <View style={styles.container}>
-                            <Text style={{ fontSize: 50, color: 'black', fontFamily: 'LobsterTwo-Regular' }}>
+                            <Text style={{
+                                fontSize: 50, color: 'black',
+                                fontFamily: 'LobsterTwo-Regular'
+                            }}>
                                 SocialDev
                             </Text>
                             <View>
@@ -97,7 +83,9 @@ export const Login = (): JSX.Element => {
                                     keyboardType='email-address'
                                     style={styles.inputs} />
 
-                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>
+                                <Text style={{ fontSize: 10, color: 'red' }}>
+                                    {errors.email}
+                                </Text>
 
                             </View>
                             <View>
@@ -110,10 +98,12 @@ export const Login = (): JSX.Element => {
                                     secureTextEntry={true}
                                     style={styles.inputs} />
 
-                                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
-                                )}
+                                <Text style={{ fontSize: 10, color: 'red' }}>
+                                    {errors.password}
+                                </Text>
+
                             </View>
-                            <TouchableOpacity onPress={login} style={styles.button}>
+                            <TouchableOpacity onPress={handleSubmit} style={styles.button}>
                                 <Text>
                                     Iniciar Sesion
                                 </Text>
@@ -123,8 +113,13 @@ export const Login = (): JSX.Element => {
                                 <Text style={{ color: 'black' }}>
                                     ¿No tienes cuenta?
                                 </Text>
-                                <TouchableOpacity onPress={register} style={{ alignItems: 'center' }}>
-                                    <Text style={{ textDecorationLine: 'underline', color: 'blue', fontSize: 18 }}>
+                                <TouchableOpacity onPress={register} style={{
+                                    alignItems: 'center'
+                                }}>
+                                    <Text style={{
+                                        textDecorationLine: 'underline',
+                                        color: 'blue', fontSize: 18
+                                    }}>
                                         Registrate
                                     </Text>
 

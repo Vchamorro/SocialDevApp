@@ -17,7 +17,7 @@ import {
 import DatePicker from 'react-native-date-picker'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-export const Register = (): JSX.Element => {
+export const Register = () => {
     const [name, setName] = useState<string>('')
     const [lastName, setLastName] = useState<string>('')
     const [date, setDate] = useState(new Date())

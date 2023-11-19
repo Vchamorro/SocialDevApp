@@ -16,7 +16,7 @@ import {
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-export const AddPost = (): JSX.Element => {
+export const AddPost = () => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>

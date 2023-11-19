@@ -6,7 +6,7 @@ import { Register } from '../screens/Register';
 import { Home } from '../screens/Home';
 import { BottomNavigator } from './BottomNavigator';
 
-export const Navigation = (): JSX.Element => {
+export const Navigation = () => {
     const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer>
