@@ -18,6 +18,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { Formik, Form, Field, yupToFormErrors } from 'formik';
 import * as Yup from 'yup';
+import { userApi } from '../api/userApi';
 
 export const Login = (): JSX.Element => {
     const [email, setEmail] = useState<string>('')
@@ -38,6 +39,10 @@ export const Login = (): JSX.Element => {
             .max(15)
             .required('El campo contraseña es requerido'),
     })
+
+    const consultarApio = async () => {
+        await userApi.get('')
+    }
     const login = () => {
         console.log(email)
         console.log(password)
@@ -106,7 +111,7 @@ export const Login = (): JSX.Element => {
                                     style={styles.inputs} />
 
                                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
-                                
+                                )}
                             </View>
                             <TouchableOpacity onPress={login} style={styles.button}>
                                 <Text>
