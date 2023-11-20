@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
     SafeAreaView,
     ScrollView,
@@ -16,6 +16,7 @@ import {
 } from 'react';
 import DatePicker from 'react-native-date-picker'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { AuthContext } from '../context/AuthContext';
 
 export const Register = () => {
     const [name, setName] = useState('')

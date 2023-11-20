@@ -11,6 +11,7 @@ import {
     Button,
     TouchableOpacity,
     Alert,
+    Keyboard,
 } from 'react-native';
 import {
     useState,
@@ -21,7 +22,7 @@ import * as Yup from 'yup';
 import { userApi } from '../api/userApi';
 import { AuthContext } from '../context/AuthContext';
 
-export const Login = ()=> {
+export const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const navigation = useNavigation()
@@ -30,7 +31,7 @@ export const Login = ()=> {
         password: '12345678'
     }
 
-    const {signIn} = useContext(AuthContext)
+    const { signIn } = useContext(AuthContext)
     const loginValidationSchema = Yup.object().shape({
         email: Yup
             .string()
@@ -46,12 +47,11 @@ export const Login = ()=> {
         console.log(response.data)
     }
     const login = (values, formikHelpers) => {
-        signIn()
-        
-        navigation.navigate('BottomNavigator')
-
+        Keyboard.dismiss()
+        signIn(values.email, values.password)
         formikHelpers.setSubmitting(false)
     }
+
     const register = () => {
         navigation.navigate('Register')
     }

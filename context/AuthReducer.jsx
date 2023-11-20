@@ -5,23 +5,32 @@ export const authReducer = (state, action) => {
     switch (action.type) {
         case 'signUp':
             return {
-
+                ...state,
+                errorMessage: '',
+                token: action.payload.token,
+                status: 'authenticated',
+                user: action.payload.user,
             }
         case 'notAuthenticated':
+        case 'logout':
             return {
-
-            }
-        case 'Logout':
-            return {
-
+                ...state,
+                status: 'not-authenticated',
+                token: null,
+                user: null,
             }
         case 'addError':
             return {
-
+                ...state,
+                status: 'not-authenticated',
+                token: null,
+                user: null,
+                errorMessage: action.payload
             }
         case 'removeError':
             return {
-
+                ...state,
+                errorMessage: []
             }
     }
 }
