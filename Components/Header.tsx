@@ -7,9 +7,7 @@ export const Header = (): JSX.Element => {
             <Text style={styles.headText}>
                 SocialDev
             </Text>
-            <TouchableOpacity>
-                <Image source={images.header.loginImage} style={{ width: 30, height: 30 }}></Image>
-            </TouchableOpacity>
+            
         </View>
     )
 }

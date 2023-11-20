@@ -18,14 +18,19 @@ import DatePicker from 'react-native-date-picker'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export const Register = () => {
-    const [name, setName] = useState<string>('')
-    const [lastName, setLastName] = useState<string>('')
+    const [name, setName] = useState('')
+    const [lastName, setLastName] = useState('')
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
-    const [user, setUser] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
+    const [user, setUser] = useState('')
+    const [password, setPassword] = useState('')
+
+    const { signUp } = useContext(AuthContext)
 
 
+    const register = () => {
+        signUp()
+    }
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={{ flex: 1 }}></View>
@@ -35,12 +40,22 @@ export const Register = () => {
                 </Text>
                 <View>
 
-                    <TextInput placeholder='Nombre' placeholderTextColor={'grey'} value={name} onChangeText={setName}
-                        keyboardType='default' style={styles.inputs} />
+                    <TextInput
+                        placeholder='Nombre'
+                        placeholderTextColor={'grey'}
+                        value={name}
+                        onChangeText={setName}
+                        keyboardType='default'
+                        style={styles.inputs} />
                 </View>
                 <View>
-                    <TextInput placeholder='Apellido' placeholderTextColor={'grey'} value={lastName} onChangeText={setLastName}
-                        keyboardType='default' style={styles.inputs} />
+                    <TextInput
+                        placeholder='Apellido'
+                        placeholderTextColor={'grey'}
+                        value={lastName}
+                        onChangeText={setLastName}
+                        keyboardType='default'
+                        style={styles.inputs} />
                 </View>
                 <View>
                     <TouchableOpacity style={styles.inputs} onPress={() => setOpen(true)}>
@@ -48,12 +63,21 @@ export const Register = () => {
                     </TouchableOpacity>
                 </View>
                 <View>
-                    <TextInput placeholder='Correo' placeholderTextColor={'grey'} value={user} onChangeText={setUser}
-                        keyboardType='email-address' style={styles.inputs} />
+                    <TextInput
+                        placeholder='Correo'
+                        placeholderTextColor={'grey'}
+                        value={user}
+                        onChangeText={setUser}
+                        keyboardType='email-address'
+                        style={styles.inputs} />
                 </View>
                 <View>
-                    <TextInput placeholder='Contraseña' placeholderTextColor={'grey'} value={password} onChangeText={setPassword}
-                        secureTextEntry={true} style={styles.inputs} />
+                    <TextInput placeholder='Contraseña'
+                        placeholderTextColor={'grey'}
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry={true}
+                        style={styles.inputs} />
                 </View>
                 <TouchableOpacity style={styles.button}>
                     <Text>

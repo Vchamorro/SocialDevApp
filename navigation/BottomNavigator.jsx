@@ -14,7 +14,11 @@ export const BottomNavigator = () => {
 
     });
     return (
-        <Tab.Navigator screenOptions={{ tabBarStyle: { height: 70 }, headerShown:false, tabBarInactiveBackgroundColor: 'black', tabBarActiveBackgroundColor: 'black', tabBarActiveTintColor: 'white', tabBarLabel: () => null, }}>
+        <Tab.Navigator screenOptions={{
+            tabBarStyle: { height: 70 }, headerShown: false,
+            tabBarInactiveBackgroundColor: 'black', tabBarActiveBackgroundColor: 'black',
+            tabBarActiveTintColor: 'white', tabBarLabel: () => null,
+        }}>
             <Tab.Screen
                 name="Home"
                 component={Home}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
     SafeAreaView,
     ScrollView,
@@ -19,16 +19,18 @@ import { useNavigation } from '@react-navigation/native';
 import { Formik, Form, Field, yupToFormErrors, useFormik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { userApi } from '../api/userApi';
-
+import { AuthContext } from '../context/AuthContext';
 
 export const Login = ()=> {
-    const [email, setEmail] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const navigation = useNavigation()
     const adminUser = {
         email: 'Admin@gmail.com',
         password: '12345678'
     }
+
+    const {signIn} = useContext(AuthContext)
     const loginValidationSchema = Yup.object().shape({
         email: Yup
             .string()
@@ -44,9 +46,8 @@ export const Login = ()=> {
         console.log(response.data)
     }
     const login = (values, formikHelpers) => {
-        console.log(values.email)
-        console.log(values.password)
-        console.log('me ejecute')
+        signIn()
+        
         navigation.navigate('BottomNavigator')
 
         formikHelpers.setSubmitting(false)
