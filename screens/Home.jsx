@@ -17,7 +17,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { Header } from '../Components/Header';
 
-export const Home = (): JSX.Element => {
+export const Home = () => {
 
     return (
         <>
