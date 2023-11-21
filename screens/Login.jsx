@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -11,11 +11,21 @@ import {
   Button,
   TouchableOpacity,
   Alert,
+  Keyboard,
 } from 'react-native';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {Formik, Form, Field, yupToFormErrors} from 'formik';
+import {
+  Formik,
+  Form,
+  Field,
+  yupToFormErrors,
+  useFormik,
+  FormikHelpers,
+} from 'formik';
 import * as Yup from 'yup';
+import {userApi} from '../api/userApi';
+import {AuthContext} from '../context/AuthContext';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -23,38 +33,30 @@ export const Login = () => {
   const navigation = useNavigation();
   const adminUser = {
     email: 'Admin@gmail.com',
-    password: '1234',
+    password: '12345678',
   };
+
+  const {signIn} = useContext(AuthContext);
   const loginValidationSchema = Yup.object().shape({
     email: Yup.string()
       .email('Ingrese un correo valido')
       .required('El campo correo es requerido'),
-    password: Yup.string()
-      .min(8, ({min}) => `La contraseña debe tener minimo ${min} caracteres`)
-      .max(15)
-      .required('El campo contraseña es requerido'),
+    password: Yup.string().required('El campo contraseña es requerido'),
   });
-  const login = () => {
-    console.log(email);
-    console.log(password);
-    // if (!email || !password) {
-    //     console.log('Ingrese datos porfavor.')
-    //     return
-    // }
-    // if (!validateEmail(email)) {
-    //     console.log('Formato de correo invalido.')
-    //     return
-    // }
-    // if (email === adminUser.email && password === adminUser.password) {
-    //     navigation.navigate('BottomNavigator')
-    // } else {
-    //     console.log('Credenciales incorrectas.')
-    // }
+
+  const consultarApi = async () => {
+    const response = await userApi.get('http://192.168.0.16:8000/api/users');
+    console.log(response.data);
   };
+  const login = (values, formikHelpers) => {
+    Keyboard.dismiss();
+    signIn(values.email, values.password);
+    formikHelpers.setSubmitting(false);
+  };
+
   const register = () => {
     navigation.navigate('Register');
   };
-
   return (
     <>
       <Formik
@@ -62,7 +64,7 @@ export const Login = () => {
           email: '',
           password: '',
         }}
-        onSubmit={values => Alert.alert(JSON.stringify(values))}
+        onSubmit={(values, formikHelpers) => login(values, formikHelpers)}
         validationSchema={loginValidationSchema}>
         {({
           values,
@@ -113,14 +115,16 @@ export const Login = () => {
                   {errors.password}
                 </Text>
               </View>
-              <TouchableOpacity onPress={login} style={styles.button}>
+              <TouchableOpacity onPress={handleSubmit} style={styles.button}>
                 <Text>Iniciar Sesion</Text>
               </TouchableOpacity>
               <View style={{marginTop: 10}}>
                 <Text style={{color: 'black'}}>¿No tienes cuenta?</Text>
                 <TouchableOpacity
                   onPress={register}
-                  style={{alignItems: 'center'}}>
+                  style={{
+                    alignItems: 'center',
+                  }}>
                   <Text
                     style={{
                       textDecorationLine: 'underline',

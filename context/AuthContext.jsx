@@ -1,62 +1,62 @@
-import React, {createContext, useReducer, useEffect} from 'react';
+import React, {createContext, useReducer} from 'react';
 import {authReducer} from './AuthReducer';
 import {userApi} from '../api/userApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// Estado inicial del contexto
+
 const authInitialState = {
-  //Status = checking, authenticated, not-authenticated
   status: 'checking',
   token: null,
   user: null,
-  errorMessage: [],
+  errorMsg: null,
 };
-// Crear el contexto
+
 export const AuthContext = createContext();
 
-// Crear Provider
 export const AuthProvider = ({children}) => {
   const [state, dispatch] = useReducer(authReducer, authInitialState);
 
-  useEffect(() => {
-    checkToken();
-  }, []);
-
-  const checkToken = async () => {
-    const token = await AsyncStorage.getItem('token');
-    console.log(token);
-
-    // Si no hay token
-    if (!token) {
-      dispatch({type: 'notAuthenticated'});
-    }
-
-    // Si hay token
+  const signIn = async (email, password) => {
     try {
-      const response = await userApi.get('/token/validate', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.status !== 200) {
-        return dispatch({type: 'notAuthenticated'});
-      }
-
+      const {data} = await userApi.post('/login', {email, password});
       dispatch({
-        type: 'signIn',
+        type: 'signUp',
         payload: {
-          token: response.data.token,
-          user: response.data.user,
+          token: data.token,
+          user: data.user,
         },
       });
     } catch (error) {
-      console.log('error en check token');
+      console.log(error.response.data);
     }
   };
 
-  const signUp = async ({name, email, password}) => {
+  const signUp = async ({
+    name,
+    lastName,
+    date,
+    user,
+    username,
+    password,
+    //selectedLanguages,
+    //softSkills,
+    //areaSkills,
+  }) => {
     try {
-      const {data} = await userApi.post('/register', {name, email, password});
+      console.log('Enviando solicitud de registro...');
+      const {data} = await userApi.post('/register', {
+        name,
+        lastName,
+        user,
+        password,
+        date,
+        username,
+        pdf_path: '',
+        role: 0,
+        publications: 0,
+        //selectedLanguages,
+        //softSkills,
+        //areaSkills,
+      });
       console.log(data.user);
       dispatch({
         type: 'signUp',
@@ -75,39 +75,19 @@ export const AuthProvider = ({children}) => {
         payload: error.response.data.errors,
       });
     }
+    console.log('registro');
+    console.log(name);
   };
-  const signIn = async ({email, password}) => {
-    try {
-      const response = await userApi.post('/login', {email, password});
-      dispatch({
-        type: 'signIn',
-        payload: {
-          token: response.data.token,
-          user: response.data.user,
-        },
-      });
 
-      // Almacenar el token del usuario.
-      await AsyncStorage.setItem('token', response.data.token);
-    } catch (error) {
-      console.log(error.response.data);
-      dispatch({
-        type: 'addError',
-        payload: error.response.data.errors,
-      });
-    }
-  };
   const logOut = async () => {
-    await AsyncStorage.removeItem('token');
-
     dispatch({
-      type: 'logOut',
+      type: 'logout',
     });
   };
-
   const removeError = () => {
     dispatch({type: 'removeError'});
   };
+
   return (
     <AuthContext.Provider
       value={{
