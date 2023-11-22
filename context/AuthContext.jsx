@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
                 }
 
             })
-        } catch (error) {    
+        } catch (error) {
             console.log(error.response.data);
         }
     }
@@ -43,24 +43,24 @@ export const AuthProvider = ({ children }) => {
         //softSkills,
         //areaSkills,
     ) => {
-        console.log('entre');
         try {
+            const formatteDate = date.toISOString().slice(0, 10).replace("T", " ");  
             console.log('Enviando solicitud de registro...');
-            const { data } = await userApi.post('/register', {
-                name,
-                lastName,
-                user,
-                password,
-                date,
-                username,
-                pdf_path: '',
+            const userdates = {
+                name: name,
+                last_name: lastName,
+                email: user,
+                password: password,
+                birth_date: formatteDate,
+                user_name: username,
+                pdf_path: 'dot',
                 role: 0,
                 publications: 0,
-                //selectedLanguages,
-                //softSkills,
-                //areaSkills,
-            });
-            console.log(data.user);
+            }
+            console.log(userdates)
+            const { data } = await userApi.post('/register',
+                userdates);
+
             dispatch({
                 type: 'signUp',
                 payload: {
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
             });
 
             // Almacenar el token del usuario.
-            await AsyncStorage.setItem('token', response.data.token);
+            await AsyncStorage.setItem('token', data.token);
         } catch (error) {
             console.log(error.response.data.errors);
             dispatch({

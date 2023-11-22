@@ -10,6 +10,8 @@ import {
     TextInput,
     Button,
     TouchableOpacity,
+    KeyboardAvoidingView,
+    Keyboard,
 } from 'react-native';
 import {
     useState,
@@ -27,24 +29,9 @@ import {
 import * as Yup from 'yup';
 
 export const Register = () => {
-    const [name, setName] = useState('')
-    const [lastName, setLastName] = useState('')
+
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
-    const [user, setUser] = useState('')
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('')
-    const [selectedLanguages, setSelectedLanguages] = useState([]);
-    const languageOptions = [
-        { id: 1, name: 'php' },
-        { id: 2, name: 'java' },
-        { id: 3, name: 'javascript' },
-        { id: 4, name: 'C++' },
-        { id: 5, name: 'c#' },
-        { id: 6, name: 'python' },
-        { id: 7, name: 'css' },
-    ];
-    const [softSkills, setSoftSkills] = useState([]);
     const softSkillsOptions = [
         { id: 1, name: 'Comunicación' },
         { id: 2, name: 'Liderazgo' },
@@ -68,7 +55,7 @@ export const Register = () => {
     const registerValidationSchema = Yup.object().shape({
         name: Yup.string().required('El campo nombre es requerido'),
         lastName: Yup.string().required('El campo apellido es requerido'),
-        date: Yup.date().required('El campo fecha es requerido'),
+        // date: Yup.date().required('El campo fecha es requerido'),
         user: Yup.string()
             .email('Ingrese un correo valido')
             .required('El campo correo es requerido'),
@@ -79,11 +66,10 @@ export const Register = () => {
 
     const register = (values, formikHelpers) => {
         Keyboard.dismiss()
-        console.log('Enviando solicitud de registro...')
         signUp(
             values.name,
             values.lastName,
-            values.date,
+            date,
             values.user,
             values.username,
             values.password,
@@ -94,68 +80,70 @@ export const Register = () => {
         formikHelpers.setSubmitting(false)
     }
 
-        const toggleLanguage = language => {
-            const selectedLanguage = languageOptions.find(
-                option => option.name === language,
-            );
-            if (!selectedLanguage) {
-                return; // Opción no encontrada, manejar según sea necesario
-            }
+    // const toggleLanguage = language => {
+    //     const selectedLanguage = languageOptions.find(
+    //         option => option.name === language,
+    //     );
+    //     if (!selectedLanguage) {
+    //         return; // Opción no encontrada, manejar según sea necesario
+    //     }
 
-            const isSelected = selectedLanguages.includes(selectedLanguage.id);
-            if (isSelected) {
-                setSelectedLanguages(
-                    selectedLanguages.filter(langId => langId !== selectedLanguage.id),
-                );
-            } else {
-                setSelectedLanguages([...selectedLanguages, selectedLanguage.id]);
-            }
-        };
+    //     const isSelected = selectedLanguages.includes(selectedLanguage.id);
+    //     if (isSelected) {
+    //         setSelectedLanguages(
+    //             selectedLanguages.filter(langId => langId !== selectedLanguage.id),
+    //         );
+    //     } else {
+    //         setSelectedLanguages([...selectedLanguages, selectedLanguage.id]);
+    //     }
+    // };
 
-        const toggleAreaSkill = areaSkill => {
-            const selectedAreaSkill = areaSkillsOptions.find(
-                option => option.name === areaSkill,
-            );
-            if (!selectedAreaSkill) {
-                return; // Opción no encontrada, manejar según sea necesario
-            }
+    // const toggleAreaSkill = areaSkill => {
+    //     const selectedAreaSkill = areaSkillsOptions.find(
+    //         option => option.name === areaSkill,
+    //     );
+    //     if (!selectedAreaSkill) {
+    //         return; // Opción no encontrada, manejar según sea necesario
+    //     }
 
-            const isSelected = areaSkills.includes(selectedAreaSkill.id);
-            if (isSelected) {
-                setAreaSkills(
-                    areaSkills.filter(skillId => skillId !== selectedAreaSkill.id),
-                );
-            } else {
-                setAreaSkills([...areaSkills, selectedAreaSkill.id]);
-            }
-        };
+    //     const isSelected = areaSkills.includes(selectedAreaSkill.id);
+    //     if (isSelected) {
+    //         setAreaSkills(
+    //             areaSkills.filter(skillId => skillId !== selectedAreaSkill.id),
+    //         );
+    //     } else {
+    //         setAreaSkills([...areaSkills, selectedAreaSkill.id]);
+    //     }
+    // };
 
-        const toggleSoftSkill = softSkill => {
-            const selectedSoftSkill = softSkillsOptions.find(
-                option => option.name === softSkill,
-            );
-            if (!selectedSoftSkill) {
-                return; // Opción no encontrada, manejar según sea necesario
-            }
+    // const toggleSoftSkill = softSkill => {
+    //     const selectedSoftSkill = softSkillsOptions.find(
+    //         option => option.name === softSkill,
+    //     );
+    //     if (!selectedSoftSkill) {
+    //         return; // Opción no encontrada, manejar según sea necesario
+    //     }
 
-            const isSelected = softSkills.includes(selectedSoftSkill.id);
-            if (isSelected) {
-                setSoftSkills(
-                    softSkills.filter(skillId => skillId !== selectedSoftSkill.id),
-                );
-            } else {
-                setSoftSkills([...softSkills, selectedSoftSkill.id]);
-            }
-        };
-    
+    //     const isSelected = softSkills.includes(selectedSoftSkill.id);
+    //     if (isSelected) {
+    //         setSoftSkills(
+    //             softSkills.filter(skillId => skillId !== selectedSoftSkill.id),
+    //         );
+    //     } else {
+    //         setSoftSkills([...softSkills, selectedSoftSkill.id]);
+    //     }
+    // };
+
 
     return (
         <>
+
             <Formik
+
                 initialValues={{
                     name: '',
                     lastName: '',
-                    date: '',
+                    date: new Date(),
                     user: '',
                     username: '',
                     password: '',
@@ -174,96 +162,105 @@ export const Register = () => {
                     handleSubmit,
                 }) => (
                     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-                        <ScrollView>
-                            <View style={{ flex: 1 }}></View>
-                            <View style={styles.container}>
-                                <Text
-                                    style={{
-                                        color: 'black',
-                                        fontSize: 24,
-                                        textAlign: 'center',
-                                        marginTop: 60,
-                                    }}>
-                                    Regístrate en SocialDEV{'\n'}y únete a nuestra comunidad.
-                                </Text>
-                                <View>
-                                    <TextInput
-                                        placeholder="Nombre"
-                                        placeholderTextColor={'grey'}
-                                        value={values.name}
-                                        onChangeText={handleChange('name')}
-                                        onBlur={handleBlur('name')}
-                                        keyboardType="default"
-                                        style={styles.inputs}
-                                    />
-                                    <Text style={{ fontSize: 10, color: 'red' }}>
-                                        {errors.name}
+                        <KeyboardAvoidingView>
+                            <ScrollView>
+                                <View style={{ flex: 1 }}></View>
+                                <View style={styles.container}>
+                                    <Text
+                                        style={{
+                                            color: 'black',
+                                            fontSize: 24,
+                                            textAlign: 'center',
+                                            marginTop: 60,
+                                            fontFamily: 'LobsterTwo-Regular'
+                                        }}>
+                                        Regístrate en SocialDEV{'\n'}y únete a nuestra comunidad.
                                     </Text>
-                                </View>
-                                <View>
-                                    <TextInput
-                                        placeholder="Apellido"
-                                        placeholderTextColor={'grey'}
-                                        value={values.lastName}
-                                        onChangeText={handleChange('lastName')}
-                                        keyboardType="default"
-                                        style={styles.inputs}
-                                    />
-                                    <Text style={{ fontSize: 10, color: 'red' }}>
-                                        {errors.lastName}
-                                    </Text>
-                                </View>
-                                <View>
-                                    <TextInput
-                                        placeholder="Username"
-                                        placeholderTextColor={'grey'}
-                                        value={values.username}
-                                        onChangeText={handleChange('username')}
-                                        keyboardType="default"
-                                        style={styles.inputs}
-                                    />
-                                    <Text style={{ fontSize: 10, color: 'red' }}>
-                                        {errors.username}
-                                    </Text>
-                                </View>
-                                <View>
-                                    <TouchableOpacity
-                                        value={values.date}
-                                        style={styles.inputs}
-                                        onPress={() => setOpen(true)}>
-                                        <Text style={styles.dateText}>
-                                            {date.toLocaleDateString()}
+                                    <View>
+                                        <TextInput
+                                            placeholder="Nombre"
+                                            placeholderTextColor={'grey'}
+                                            value={values.name}
+                                            onChangeText={handleChange('name')}
+                                            onBlur={handleBlur('name')}
+                                            keyboardType="default"
+                                            style={styles.inputs}
+                                        />
+                                        <Text style={{ fontSize: 10, color: 'red' }}>
+                                            {errors.name}
                                         </Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View>
-                                    <TextInput
-                                        placeholder="Correo"
-                                        placeholderTextColor={'grey'}
-                                        value={values.user}
-                                        onChangeText={handleChange('user')}
-                                        keyboardType="email-address"
-                                        style={styles.inputs}
-                                    />
-                                    <Text style={{ fontSize: 10, color: 'red' }}>
-                                        {errors.user}
-                                    </Text>
-                                </View>
-                                <View>
-                                    <TextInput
-                                        placeholder="Contraseña"
-                                        placeholderTextColor={'grey'}
-                                        value={values.password}
-                                        onChangeText={handleChange('password')}
-                                        secureTextEntry={true}
-                                        style={styles.inputs}
-                                    />
-                                    <Text style={{ fontSize: 10, color: 'red' }}>
-                                        {errors.password}
-                                    </Text>
-                                </View>
-                                {/* Lista de checkboxes para seleccionar los lenguajes de programación */}
-                                {/* <View
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            placeholder="Apellido"
+                                            placeholderTextColor={'grey'}
+                                            value={values.lastName}
+                                            onChangeText={handleChange('lastName')}
+                                            onBlur={handleBlur('lastName')}
+                                            keyboardType="default"
+                                            style={styles.inputs}
+                                        />
+                                        <Text style={{ fontSize: 10, color: 'red' }}>
+                                            {errors.lastName}
+                                        </Text>
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            placeholder="Username"
+                                            placeholderTextColor={'grey'}
+                                            value={values.username}
+                                            onChangeText={handleChange('username')}
+                                            onBlur={handleBlur('username')}
+                                            keyboardType="default"
+                                            style={styles.inputs}
+                                        />
+                                        <Text style={{ fontSize: 10, color: 'red' }}>
+                                            {errors.username}
+                                        </Text>
+                                    </View>
+                                    <View>
+                                        <TouchableOpacity
+                                            value={values.date}
+                                            style={styles.inputs}
+                                            onChangeText={handleChange('date')}
+                                            onBlur={handleBlur('date')}
+                                            onPress={() => setOpen(true)}>
+
+                                            <Text style={styles.dateText}>
+                                                {date.toLocaleDateString()}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            placeholder="Correo"
+                                            placeholderTextColor={'grey'}
+                                            value={values.user}
+                                            onChangeText={handleChange('user')}
+                                            onBlur={handleBlur('user')}
+                                            keyboardType="email-address"
+                                            style={styles.inputs}
+                                        />
+                                        <Text style={{ fontSize: 10, color: 'red' }}>
+                                            {errors.user}
+                                        </Text>
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            placeholder="Contraseña"
+                                            placeholderTextColor={'grey'}
+                                            value={values.password}
+                                            onChangeText={handleChange('password')}
+                                            onBlur={handleBlur('password')}
+                                            secureTextEntry={true}
+                                            style={styles.inputs}
+                                        />
+                                        <Text style={{ fontSize: 10, color: 'red' }}>
+                                            {errors.password}
+                                        </Text>
+                                    </View>
+                                    {/* Lista de checkboxes para seleccionar los lenguajes de programación */}
+                                    {/* <View
                                     style={{ marginTop: 15, alignItems: 'flex-start', width: 250 }}>
                                     <Text>Lenguajes de Programación que dominas:</Text>
                                     <View>
@@ -288,8 +285,8 @@ export const Register = () => {
                                         ))}
                                     </View>
                                 </View> */}
-                                {/* Lista de checkboxes para seleccionar las areaSkills */}
-                                {/* <View
+                                    {/* Lista de checkboxes para seleccionar las areaSkills */}
+                                    {/* <View
                                     style={{ marginTop: 15, alignItems: 'flex-start', width: 250 }}>
                                     <Text>Habilidades en tu area:</Text>
                                     <View>
@@ -315,8 +312,8 @@ export const Register = () => {
                                     </View>
                                 </View> */}
 
-                                {/* Lista de checkboxes para seleccionar las softSkills */}
-                                {/* <View
+                                    {/* Lista de checkboxes para seleccionar las softSkills */}
+                                    {/* <View
                                     style={{ marginTop: 15, alignItems: 'flex-start', width: 250 }}>
                                     <Text>Habilidades blandas:</Text>
                                     <View>
@@ -345,30 +342,33 @@ export const Register = () => {
                                         </Text>
                                     </View>
                                 </View> */}
-                                {/* Botón de registro */}
-                                <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-                                    <Text>Registrarte</Text>
-                                </TouchableOpacity>
-                                <View style={{ marginTop: 10 }}></View>
-                            </View>
-                            <View style={{ flex: 1 }}></View>
-                            <DatePicker
-                                modal
-                                open={open}
-                                date={date}
-                                mode="date"
-                                onConfirm={selectedDate => {
-                                    setOpen(false);
-                                    setDate(selectedDate);
-                                }}
-                                onCancel={() => {
-                                    setOpen(false);
-                                }}
-                            />
-                        </ScrollView>
+                                    {/* Botón de registro */}
+                                    <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+                                        <Text>Registrarte</Text>
+                                    </TouchableOpacity>
+                                    <View style={{ marginTop: 10 }}></View>
+                                </View>
+                                <View style={{ flex: 1 }}></View>
+                                <DatePicker
+                                    modal
+                                    open={open}
+                                    date={date}
+                                    mode="date"
+                                    onConfirm={selectedDate => {
+                                        setOpen(false);
+                                        setDate(selectedDate);
+                                    }}
+                                    onCancel={() => {
+                                        setOpen(false);
+                                    }}
+                                />
+                            </ScrollView>
+                        </KeyboardAvoidingView>
                     </SafeAreaView>
                 )}
+
             </Formik>
+
         </>
     );
 }

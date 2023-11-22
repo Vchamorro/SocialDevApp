@@ -11,6 +11,7 @@ import {
     Button,
     TouchableOpacity,
     Alert,
+    KeyboardAvoidingView,
     Keyboard,
 } from 'react-native';
 import {
