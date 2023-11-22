@@ -42,10 +42,6 @@ export const Login = () => {
             .required('El campo contraseña es requerido'),
     })
 
-    const consultarApi = async () => {
-        const response = await userApi.get('http://192.168.0.16:8000/api/users')
-        console.log(response.data)
-    }
     const login = (values, formikHelpers) => {
         Keyboard.dismiss()
         signIn(values.email, values.password)

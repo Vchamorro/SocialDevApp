@@ -27,14 +27,60 @@ export const AuthProvider = ({ children }) => {
                 }
 
             })
-        } catch (error) {
+        } catch (error) {    
             console.log(error.response.data);
         }
     }
 
-    const signUp = () => {
-        console.log('registro')
-    }
+    const signUp = async (
+        name,
+        lastName,
+        date,
+        user,
+        username,
+        password,
+        //selectedLanguages,
+        //softSkills,
+        //areaSkills,
+    ) => {
+        console.log('entre');
+        try {
+            console.log('Enviando solicitud de registro...');
+            const { data } = await userApi.post('/register', {
+                name,
+                lastName,
+                user,
+                password,
+                date,
+                username,
+                pdf_path: '',
+                role: 0,
+                publications: 0,
+                //selectedLanguages,
+                //softSkills,
+                //areaSkills,
+            });
+            console.log(data.user);
+            dispatch({
+                type: 'signUp',
+                payload: {
+                    token: data.token,
+                    user: data.user,
+                },
+            });
+
+            // Almacenar el token del usuario.
+            await AsyncStorage.setItem('token', response.data.token);
+        } catch (error) {
+            console.log(error.response.data.errors);
+            dispatch({
+                type: 'addError',
+                payload: error.response.data.errors,
+            });
+        }
+        console.log('registro');
+        console.log(name);
+    };
 
     const logOut = async () => {
         dispatch({

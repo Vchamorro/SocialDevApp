@@ -7,6 +7,7 @@ import { Home } from '../screens/Home';
 import { BottomNavigator } from './BottomNavigator';
 import { AuthContext } from '../context/AuthContext';
 
+
 export const Navigation = () => {
     const { status } = React.useContext(AuthContext);
     const Stack = createNativeStackNavigator();
