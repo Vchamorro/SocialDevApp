@@ -6,11 +6,13 @@ import { Register } from '../screens/Register';
 import { Home } from '../screens/Home';
 import { BottomNavigator } from './BottomNavigator';
 import { AuthContext } from '../context/AuthContext';
+import LoadingScreen from '../screens/LoadingScreen';
 
-
+const Stack = createNativeStackNavigator();
 export const Navigation = () => {
     const { status } = React.useContext(AuthContext);
-    const Stack = createNativeStackNavigator();
+    if (status === 'checking') return <LoadingScreen />
+
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>

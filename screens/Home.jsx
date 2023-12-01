@@ -23,6 +23,16 @@ export const Home = () => {
         <>
             <Header />
             <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+                <Text
+                    style={{
+                        color: 'black',
+                        fontSize: 24,
+                        textAlign: 'center',
+                        marginTop: 60,
+                        fontFamily: 'LobsterTwo-Regular'
+                    }}>
+                    Home
+                </Text>
                 <View style={{ flex: 1 }}></View>
                 <View style={styles.container}>
                     <View style={{ marginTop: 10 }}>

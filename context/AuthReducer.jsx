@@ -3,6 +3,14 @@ import React from "react";
 
 export const authReducer = (state, action) => {
     switch (action.type) {
+        case 'signIn':
+            return {
+                ...state,
+                errorMessage: '',
+                token: action.payload.token,
+                status: 'authenticated',
+                user: action.payload.user,
+            }
         case 'signUp':
             return {
                 ...state,
