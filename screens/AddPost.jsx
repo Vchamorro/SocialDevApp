@@ -13,6 +13,7 @@ import {
   Image,
   Platform,
   Alert,
+  Keyboard,
 } from 'react-native';
 import {useContext, useState} from 'react';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -21,6 +22,15 @@ import {userApi} from '../api/userApi';
 import {AuthContext} from '../context/AuthContext';
 import {useNavigation} from '@react-navigation/native';
 import {Header} from '../Components/Header';
+import {
+  Formik,
+  Form,
+  Field,
+  yupToFormErrors,
+  useFormik,
+  FormikHelpers,
+} from 'formik';
+import * as Yup from 'yup';
 
 export const AddPost = () => {
   const {user, token} = useContext(AuthContext);
@@ -83,71 +93,140 @@ export const AddPost = () => {
     }
   };
 
+  const regitrationValidationSchema = Yup.object().shape({
+    title: Yup.string().required('El campo título es requerido'),
+    description: Yup.string().required('El campo descripción es requerido'),
+  });
+
+  const addPost = async (values, formikHelpers) => {
+    Keyboard.dismiss();
+    const {url} = await uploadImage();
+    const post = {
+      title: values.title,
+      description: values.description,
+      image_path: url,
+      user_id: user.id,
+      likes: 0,
+      comments: 0,
+    };
+    try {
+      const {data} = await userApi.post('/post', post, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(data);
+      Alert.alert('El post fue creado correctamente.');
+    } catch (error) {
+      console.log('Error en la solicitud:', error);
+      console.log(error.response.data.errors);
+    }
+    console.log(post);
+    formikHelpers.setSubmitting(false);
+  };
+
   return (
     <>
       <Header />
-      <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-        <Text
-          style={{
-            color: 'black',
-            fontSize: 24,
-            textAlign: 'center',
-            marginTop: 30,
-            fontFamily: 'LobsterTwo-Regular',
-          }}>
-          Agregar Post
-        </Text>
-        <View>
-          <TextInput
-            placeholder="Título"
-            placeholderTextColor={'grey'}
-            //value={values.user}
-            //onChangeText={handleChange('user')}
-            //onBlur={handleBlur('user')}
-            keyboardType="email-address"
-            style={styles.inputs}
-          />
-        </View>
-        <View>
-          <TextInput
-            placeholder="Descripción"
-            placeholderTextColor={'grey'}
-            //value={values.user}
-            //onChangeText={handleChange('user')}
-            //onBlur={handleBlur('user')}
-            keyboardType="email-address"
-            style={styles.description}
-          />
-        </View>
-        <View>
-          <Image
-            style={{
-              alignSelf: 'center',
-              height: 200,
-              width: 200,
-              borderRadius: 10,
-              borderWidth: 1,
-              borderColor: 'black',
-              marginLeft: 20,
-              marginTop: 15,
-            }}
-            source={{uri: image}}
-          />
-        </View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => handleChoosePhoto()}>
-          <Text
-            style={{color: 'white', textAlign: 'center', fontWeight: 'bold'}}>
-            Agregar Imagen
-          </Text>
-        </TouchableOpacity>
-        <View style={{flex: 1}}></View>
-        <View style={styles.container}>
-          <View style={{marginTop: 10}}></View>
-        </View>
-        <View style={{flex: 1}}></View>
-      </SafeAreaView>
+      <Formik
+        initialValues={{
+          title: '',
+          description: '',
+        }}
+        onSubmit={(values, formikHelpers) => addPost(values, formikHelpers)}
+        validationSchema={regitrationValidationSchema}>
+        {({
+          values,
+          handleChange,
+          handleBlur,
+          errors,
+          setFieldTouched,
+          handleSubmit,
+        }) => (
+          <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 24,
+                textAlign: 'center',
+                marginTop: 30,
+                fontFamily: 'LobsterTwo-Regular',
+              }}>
+              Agregar Post
+            </Text>
+            <View>
+              <TextInput
+                placeholder="Título"
+                placeholderTextColor={'grey'}
+                value={values.title}
+                onChangeText={handleChange('title')}
+                onBlur={handleBlur('title')}
+                keyboardType="email-address"
+                style={styles.inputs}
+              />
+              <Text style={{fontSize: 10, color: 'red', alignSelf: 'center'}}>
+                {errors.title}
+              </Text>
+            </View>
+            <View>
+              <TextInput
+                placeholder="Descripción"
+                placeholderTextColor={'grey'}
+                value={values.description}
+                onChangeText={handleChange('description')}
+                onBlur={handleBlur('description')}
+                keyboardType="email-address"
+                style={styles.description}
+              />
+              <Text style={{fontSize: 10, color: 'red', alignSelf: 'center'}}>
+                {errors.description}
+              </Text>
+            </View>
+            <View>
+              <Image
+                style={{
+                  alignSelf: 'center',
+                  height: 200,
+                  width: 200,
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  borderColor: 'black',
+                  marginLeft: 20,
+                  marginTop: 15,
+                }}
+                source={{uri: image}}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => handleChoosePhoto()}>
+              <Text
+                style={{
+                  color: 'white',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                }}>
+                Agregar Imagen
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+              <Text
+                style={{
+                  color: 'white',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                }}>
+                Agregar Post
+              </Text>
+            </TouchableOpacity>
+            <View style={{flex: 1}}></View>
+            <View style={styles.container}>
+              <View style={{marginTop: 10}}></View>
+            </View>
+            <View style={{flex: 1}}></View>
+          </SafeAreaView>
+        )}
+      </Formik>
     </>
   );
 };
