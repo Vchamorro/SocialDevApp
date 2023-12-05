@@ -98,7 +98,6 @@ export const UserProfile = () => {
                     </View>
                 </View>
                 <View style={{ flex: 1 }}></View>
-
             </SafeAreaView>
         </>
     );
