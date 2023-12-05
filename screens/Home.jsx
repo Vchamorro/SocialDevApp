@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import {
     SafeAreaView,
     ScrollView,
@@ -10,14 +10,28 @@ import {
     TextInput,
     Button,
     TouchableOpacity,
+    FlatList,
+    RefreshControl,
 } from 'react-native';
 import {
     useState,
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Header } from '../Components/Header';
+import { userApi } from '../api/userApi';
+import { AuthContext } from '../context/AuthContext';
+import Post from '../Components/Post';
 
 export const Home = () => {
+
+    const {token, getPosts, posts} = useContext(AuthContext);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = async () => {
+        setRefreshing(true);
+        await getPosts();
+        setRefreshing(false);
+    };
 
     return (
         <>
@@ -26,6 +40,22 @@ export const Home = () => {
                 <View style={{ flex: 1 }}></View>
                 <View style={styles.container}>
                     <View style={{ marginTop: 10 }}>
+                        <Text>wenas</Text>
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            scrollEnabled
+                            data={posts}
+                            renderItem={({item}) => <Post post={item} />}
+                            keyExtractor={item => item.id.toString()}
+                            style={styleList.flatList}
+                            contentContainerStyle={{ paddingBottom: 80 }}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={refreshing}
+                                    onRefresh={onRefresh}/>
+                            }
+                        />
+                        <Text>wenas</Text>
                     </View>
                 </View>
                 <View style={{ flex: 1 }}></View>
@@ -33,6 +63,26 @@ export const Home = () => {
         </>
     );
 }
+
+const styleList = StyleSheet.create({
+    container: {
+      flex: 1,
+      marginTop: StatusBar.currentHeight || 0,
+    },
+    item: {
+      backgroundColor: '#f9c2ff',
+      padding: 20,
+      marginVertical: 8,
+      marginHorizontal: 16,
+    },
+    title: {
+      fontSize: 32,
+    },
+    flatList: {
+        flexGrow: 1,
+    }
+  });
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
