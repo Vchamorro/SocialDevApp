@@ -10,6 +10,7 @@ import {
     TextInput,
     Button,
     TouchableOpacity,
+    Image,
 } from 'react-native';
 import {
     useState,
@@ -18,13 +19,19 @@ import { useNavigation } from '@react-navigation/native';
 import { Header } from '../Components/Header';
 import { authReducer } from '../context/AuthReducer';
 import { AuthContext } from '../context/AuthContext';
+import images from '../utils/images';
+import { Navigation } from '../navigation/Navigation';
 
 export const UserProfile = () => {
     const [userData, setUserData] = useState(null);
 
     const { user } = useContext(AuthContext)
 
+    const navigation = useNavigation()
 
+    const editProfile = () => {
+        navigation.navigate('EditProfile')
+    }
 
     return (
         <>
@@ -34,25 +41,60 @@ export const UserProfile = () => {
                     style={{
                         color: 'black',
                         fontSize: 24,
-                        textAlign: 'center',
-                        marginTop: 60,
+                        textAlign: 'left',
+                        marginTop: 13,
                         fontFamily: 'LobsterTwo-Regular'
                     }}>
-                    {user.name}
-
+                    Nombre:{user.name} {user.last_name}
                 </Text>
-                <View>
-                    {/* {userData ? (
-                        <Text>Nombre de usuario: {userData.username}</Text>
-
-                    ) : (
-                        <Text>No se encontraron datos del usuario.</Text>
-                    )} */}
-                </View>
+                <Text
+                    style={{
+                        color: 'black',
+                        fontSize: 24,
+                        textAlign: 'left',
+                        marginTop: 13,
+                        fontFamily: 'LobsterTwo-Regular'
+                    }}>
+                    Nombre de usuario: {user.user_name}
+                </Text>
+                <Text
+                    style={{
+                        color: 'black',
+                        fontSize: 24,
+                        textAlign: 'left',
+                        marginTop: 13,
+                        fontFamily: 'LobsterTwo-Regular'
+                    }}>
+                    Correo:{user.email}
+                </Text>
+                <Text
+                    style={{
+                        color: 'black',
+                        fontSize: 24,
+                        textAlign: 'left',
+                        marginTop: 13,
+                        fontFamily: 'LobsterTwo-Regular'
+                    }}>
+                    Publicaciones Subidas:{user.publications}
+                </Text>
+                <Text
+                    style={{
+                        color: 'black',
+                        fontSize: 24,
+                        textAlign: 'left',
+                        marginTop: 13,
+                        fontFamily: 'LobsterTwo-Regular'
+                    }}>
+                    Habilidades:{user.skills}
+                </Text>
+                
                 <View style={{ flex: 1 }}></View>
+                <TouchableOpacity onPress={editProfile} style={{alignItems:'flex-end', marginTop:400}}>
+                <Image source={images.utils.editProfile} style={{ width: 60, height: 60}} />
+                </TouchableOpacity>
                 <View style={styles.container}>
                     <View style={{ marginTop: 10 }}>
-
+                    
                     </View>
                 </View>
                 <View style={{ flex: 1 }}></View>

@@ -7,6 +7,7 @@ import { Home } from '../screens/Home';
 import { BottomNavigator } from './BottomNavigator';
 import { AuthContext } from '../context/AuthContext';
 import LoadingScreen from '../screens/LoadingScreen';
+import { EditProfile } from '../screens/EditProfile';
 
 const Stack = createNativeStackNavigator();
 export const Navigation = () => {
@@ -25,7 +26,10 @@ export const Navigation = () => {
                             </>
                         )
                         : (
-                            <Stack.Screen name='BottomNavigator' component={BottomNavigator} />
+                            <>
+                                <Stack.Screen name='BottomNavigator' component={BottomNavigator} />
+                                <Stack.Screen name='EditProfile' component={EditProfile} />
+                            </>
                         )
                 }
             </Stack.Navigator>
