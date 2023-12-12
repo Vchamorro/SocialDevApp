@@ -1,21 +1,21 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    useColorScheme,
-    View,
-    TextInput,
-    Button,
-    TouchableOpacity,
-    KeyboardAvoidingView,
-    Keyboard,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Keyboard,
 } from 'react-native';
-import {useState} from 'react';
+import { useState } from 'react';
 import DatePicker from 'react-native-date-picker';
-import {AuthContext} from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 import {
   Formik,
   Form,
@@ -25,7 +25,7 @@ import {
   FormikHelpers,
 } from 'formik';
 import * as Yup from 'yup';
-import {languageOptions} from '../helpers/languages';
+import { languageOptions } from '../helpers/languages';
 
 export const Register = () => {
   const [date, setDate] = useState(new Date());
@@ -33,24 +33,24 @@ export const Register = () => {
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [softSkills, setSoftSkills] = useState([]);
   const softSkillsOptions = [
-    {id: 1, name: 'Comunicación'},
-    {id: 2, name: 'Liderazgo'},
-    {id: 3, name: 'Trabajo en equipo'},
-    {id: 4, name: 'Creatividad'},
-    {id: 5, name: 'Gestión de proyectos'},
+    { id: 1, name: 'Comunicación' },
+    { id: 2, name: 'Liderazgo' },
+    { id: 3, name: 'Trabajo en equipo' },
+    { id: 4, name: 'Creatividad' },
+    { id: 5, name: 'Gestión de proyectos' },
   ];
   const [areaSkills, setAreaSkills] = useState([]);
   const areaSkillsOptions = [
-    {id: 1, name: 'Desarrollo web'},
-    {id: 2, name: 'Desarrollo móvil'},
-    {id: 3, name: 'Desarrollo de software'},
+    { id: 1, name: 'Desarrollo web' },
+    { id: 2, name: 'Desarrollo móvil' },
+    { id: 3, name: 'Desarrollo de software' },
   ];
 
   console.log(selectedLanguages);
   console.log(softSkills);
   console.log(areaSkills);
 
-  const {signUp} = useContext(AuthContext);
+  const { signUp } = useContext(AuthContext);
 
   const registerValidationSchema = Yup.object().shape({
     name: Yup.string().required('El campo nombre es requerido'),
@@ -158,10 +158,10 @@ export const Register = () => {
           isValid,
           handleSubmit,
         }) => (
-          <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+          <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
             <KeyboardAvoidingView>
               <ScrollView>
-                <View style={{flex: 1}}></View>
+                <View style={{ flex: 1 }}></View>
                 <View style={styles.container}>
                   <Text
                     style={{
@@ -183,7 +183,7 @@ export const Register = () => {
                       keyboardType="default"
                       style={styles.inputs}
                     />
-                    <Text style={{fontSize: 10, color: 'red'}}>
+                    <Text style={{ fontSize: 10, color: 'red' }}>
                       {errors.name}
                     </Text>
                   </View>
@@ -197,7 +197,7 @@ export const Register = () => {
                       keyboardType="default"
                       style={styles.inputs}
                     />
-                    <Text style={{fontSize: 10, color: 'red'}}>
+                    <Text style={{ fontSize: 10, color: 'red' }}>
                       {errors.lastName}
                     </Text>
                   </View>
@@ -211,7 +211,7 @@ export const Register = () => {
                       keyboardType="default"
                       style={styles.inputs}
                     />
-                    <Text style={{fontSize: 10, color: 'red'}}>
+                    <Text style={{ fontSize: 10, color: 'red' }}>
                       {errors.username}
                     </Text>
                   </View>
@@ -237,7 +237,7 @@ export const Register = () => {
                       keyboardType="email-address"
                       style={styles.inputs}
                     />
-                    <Text style={{fontSize: 10, color: 'red'}}>
+                    <Text style={{ fontSize: 10, color: 'red' }}>
                       {errors.user}
                     </Text>
                   </View>
@@ -251,7 +251,7 @@ export const Register = () => {
                       secureTextEntry={true}
                       style={styles.inputs}
                     />
-                    <Text style={{fontSize: 10, color: 'red'}}>
+                    <Text style={{ fontSize: 10, color: 'red' }}>
                       {errors.password}
                     </Text>
                   </View>
@@ -263,7 +263,13 @@ export const Register = () => {
                         alignItems: 'flex-start',
                         width: 250,
                       }}>
-                      <Text>Lenguajes de Programación que dominas:</Text>
+                      <Text style={{
+                        color: 'black',
+                        fontSize: 22,
+                        textAlign: 'center',
+                        marginTop: 60,
+                        fontFamily: 'LobsterTwo-Regular',
+                      }}>Lenguajes Dominados:</Text>
                       <View>
                         {languageOptions.map(language => (
                           <View
@@ -284,7 +290,7 @@ export const Register = () => {
                                 ✓
                               </Text>
                             </TouchableOpacity>
-                            <Text>{language.name}</Text>
+                            <Text style={styles.dateText}>{language.name}</Text>
                           </View>
                         ))}
                       </View>
@@ -298,7 +304,13 @@ export const Register = () => {
                         alignItems: 'flex-start',
                         width: 250,
                       }}>
-                      <Text>Habilidades en tu area:</Text>
+                      <Text style={{
+                        color: 'black',
+                        fontSize: 24,
+                        textAlign: 'center',
+                        marginTop: 60,
+                        fontFamily: 'LobsterTwo-Regular',
+                      }}>Habilidades en tu area:</Text>
                       <View>
                         {areaSkillsOptions.map(areaSkill => (
                           <View
@@ -319,7 +331,7 @@ export const Register = () => {
                                 ✓
                               </Text>
                             </TouchableOpacity>
-                            <Text>{areaSkill.name}</Text>
+                            <Text style={styles.dateText}>{areaSkill.name}</Text>
                           </View>
                         ))}
                       </View>
@@ -334,7 +346,13 @@ export const Register = () => {
                         alignItems: 'flex-start',
                         width: 250,
                       }}>
-                      <Text>Habilidades blandas:</Text>
+                      <Text style={{
+                        color: 'black',
+                        fontSize: 24,
+                        textAlign: 'center',
+                        marginTop: 60,
+                        fontFamily: 'LobsterTwo-Regular',
+                      }}>Habilidades blandas:</Text>
                       <View>
                         {softSkillsOptions.map(softSkill => (
                           <View
@@ -356,10 +374,10 @@ export const Register = () => {
                                 ✓
                               </Text>
                             </TouchableOpacity>
-                            <Text>{softSkill.name}</Text>
+                            <Text style={styles.dateText}>{softSkill.name}</Text>
                           </View>
                         ))}
-                        <Text style={{fontSize: 10, color: 'red'}}>
+                        <Text style={{ fontSize: 10, color: 'red' }}>
                           {errors.softSkills}
                         </Text>
                       </View>
@@ -371,9 +389,9 @@ export const Register = () => {
                     style={styles.button}>
                     <Text>Registrarte</Text>
                   </TouchableOpacity>
-                  <View style={{marginTop: 10}}></View>
+                  <View style={{ marginTop: 10 }}></View>
                 </View>
-                <View style={{flex: 1}}></View>
+                <View style={{ flex: 1 }}></View>
                 <DatePicker
                   modal
                   open={open}

@@ -122,6 +122,13 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'removeError' });
   };
 
+  const updateUser = async (user) => {
+    dispatch({
+      type: 'updateUser',
+      payload: user,
+    });
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -130,6 +137,7 @@ export const AuthProvider = ({ children }) => {
         signUp,
         logOut,
         removeError,
+        updateUser
       }}>
       {children}
     </AuthContext.Provider>

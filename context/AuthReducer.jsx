@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import React from 'react';
 
 export const authReducer = (state, action) => {
@@ -39,6 +39,11 @@ export const authReducer = (state, action) => {
             return {
                 ...state,
                 errorMessage: []
+            }
+        case 'updateUser':
+            return {
+                ...state,
+                user: action.payload
             }
     }
 }

@@ -85,16 +85,16 @@ export const UserProfile = () => {
                         marginTop: 13,
                         fontFamily: 'LobsterTwo-Regular'
                     }}>
-                    Habilidades:{user.skills}
+                    Habilidades:{user.area_skills}
                 </Text>
-                
+
                 <View style={{ flex: 1 }}></View>
-                <TouchableOpacity onPress={editProfile} style={{alignItems:'flex-end', marginTop:400}}>
-                <Image source={images.utils.editProfile} style={{ width: 60, height: 60}} />
+                <TouchableOpacity onPress={editProfile} style={{ alignItems: 'flex-end', marginTop: 400 }}>
+                    <Image source={images.utils.editProfile} style={{ width: 60, height: 60 }} />
                 </TouchableOpacity>
                 <View style={styles.container}>
                     <View style={{ marginTop: 10 }}>
-                    
+
                     </View>
                 </View>
                 <View style={{ flex: 1 }}></View>

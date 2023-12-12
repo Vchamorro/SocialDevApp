@@ -26,12 +26,15 @@ import {
     useFormik,
     FormikHelpers,
 } from 'formik';
+import { languageOptions } from '../helpers/languages';
 import * as Yup from 'yup';
 
 export const EditProfile = () => {
 
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
+    const [selectedLanguages, setSelectedLanguages] = useState([]);
+    const [softSkills, setSoftSkills] = useState([]);
     const softSkillsOptions = [
         { id: 1, name: 'Comunicación' },
         { id: 2, name: 'Liderazgo' },
@@ -55,78 +58,72 @@ export const EditProfile = () => {
     const registerValidationSchema = Yup.object().shape({
         name: Yup.string().required('El campo nombre es requerido'),
         lastName: Yup.string().required('El campo apellido es requerido'),
-        // date: Yup.date().required('El campo fecha es requerido'),
         password: Yup.string().required('El campo contraseña es requerido'),
-        //softSkills: Yup.array().min(1, 'Seleccione al menos una habilidad blanda'),
+        softSkills: Yup.array().min(1, 'Seleccione al menos una habilidad blanda'),
     });
 
-    const register = (values, formikHelpers) => {
+    const { updateUser } = useContext(AuthContext)
+
+    const getData = (values, formikHelpers) => {
         Keyboard.dismiss()
-        signUp(
-            values.name,
-            values.lastName,
-            date,
-            values.password,
-            //selectedLanguages,
-            //softSkills,
-            //areaSkills,
-        )
+        console.log(values.name, values.lastName, values.password, selectedLanguages, softSkills, areaSkills)
+        updateUser(values.name, values.lastName, values.password, selectedLanguages, softSkills, areaSkills)
         formikHelpers.setSubmitting(false)
     }
 
-    // const toggleLanguage = language => {
-    //     const selectedLanguage = languageOptions.find(
-    //         option => option.name === language,
-    //     );
-    //     if (!selectedLanguage) {
-    //         return; // Opción no encontrada, manejar según sea necesario
-    //     }
+    const toggleLanguage = language => {
+        const selectedLanguage = languageOptions.find(
+            option => option.name === language,
+        );
+        if (!selectedLanguage) {
+            return; // Opción no encontrada, manejar según sea necesario
+        }
 
-    //     const isSelected = selectedLanguages.includes(selectedLanguage.id);
-    //     if (isSelected) {
-    //         setSelectedLanguages(
-    //             selectedLanguages.filter(langId => langId !== selectedLanguage.id),
-    //         );
-    //     } else {
-    //         setSelectedLanguages([...selectedLanguages, selectedLanguage.id]);
-    //     }
-    // };
+        const isSelected = selectedLanguages.includes(selectedLanguage.id);
+        if (isSelected) {
+            setSelectedLanguages(
+                selectedLanguages.filter(langId => langId !== selectedLanguage.id),
+            );
+        } else {
+            setSelectedLanguages([...selectedLanguages, selectedLanguage.id]);
+        }
+    };
 
-    // const toggleAreaSkill = areaSkill => {
-    //     const selectedAreaSkill = areaSkillsOptions.find(
-    //         option => option.name === areaSkill,
-    //     );
-    //     if (!selectedAreaSkill) {
-    //         return; // Opción no encontrada, manejar según sea necesario
-    //     }
+    const toggleAreaSkill = areaSkill => {
+        const selectedAreaSkill = areaSkillsOptions.find(
+            option => option.name === areaSkill,
+        );
+        if (!selectedAreaSkill) {
+            return; // Opción no encontrada, manejar según sea necesario
+        }
 
-    //     const isSelected = areaSkills.includes(selectedAreaSkill.id);
-    //     if (isSelected) {
-    //         setAreaSkills(
-    //             areaSkills.filter(skillId => skillId !== selectedAreaSkill.id),
-    //         );
-    //     } else {
-    //         setAreaSkills([...areaSkills, selectedAreaSkill.id]);
-    //     }
-    // };
+        const isSelected = areaSkills.includes(selectedAreaSkill.id);
+        if (isSelected) {
+            setAreaSkills(
+                areaSkills.filter(skillId => skillId !== selectedAreaSkill.id),
+            );
+        } else {
+            setAreaSkills([...areaSkills, selectedAreaSkill.id]);
+        }
+    };
 
-    // const toggleSoftSkill = softSkill => {
-    //     const selectedSoftSkill = softSkillsOptions.find(
-    //         option => option.name === softSkill,
-    //     );
-    //     if (!selectedSoftSkill) {
-    //         return; // Opción no encontrada, manejar según sea necesario
-    //     }
+    const toggleSoftSkill = softSkill => {
+        const selectedSoftSkill = softSkillsOptions.find(
+            option => option.name === softSkill,
+        );
+        if (!selectedSoftSkill) {
+            return; // Opción no encontrada, manejar según sea necesario
+        }
 
-    //     const isSelected = softSkills.includes(selectedSoftSkill.id);
-    //     if (isSelected) {
-    //         setSoftSkills(
-    //             softSkills.filter(skillId => skillId !== selectedSoftSkill.id),
-    //         );
-    //     } else {
-    //         setSoftSkills([...softSkills, selectedSoftSkill.id]);
-    //     }
-    // };
+        const isSelected = softSkills.includes(selectedSoftSkill.id);
+        if (isSelected) {
+            setSoftSkills(
+                softSkills.filter(skillId => skillId !== selectedSoftSkill.id),
+            );
+        } else {
+            setSoftSkills([...softSkills, selectedSoftSkill.id]);
+        }
+    };
 
 
     return (
@@ -141,7 +138,7 @@ export const EditProfile = () => {
                     password: '',
                     //softSkills: [],
                 }}
-                onSubmit={(values, formikHelpers) => register(values, formikHelpers)}
+                onSubmit={(values, formikHelpers) => getData(values, formikHelpers)}
                 validationSchema={registerValidationSchema}>
                 {({
                     values,
@@ -211,88 +208,133 @@ export const EditProfile = () => {
                                         </Text>
                                     </View>
                                     {/* Lista de checkboxes para seleccionar los lenguajes de programación */}
-                                    {/* <View
-                                    style={{ marginTop: 15, alignItems: 'flex-start', width: 250 }}>
-                                    <Text>Lenguajes de Programación que dominas:</Text>
-                                    <View>
-                                        {languageOptions.map(language => (
-                                            <View
-                                                key={language.id}
-                                                style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                <TouchableOpacity
-                                                    style={styles.checkbox}
-                                                    onPress={() => toggleLanguage(language.name)}>
-                                                    <Text
+                                    {
+                                        <View
+                                            style={{
+                                                marginTop: 15,
+                                                alignItems: 'flex-start',
+                                                width: 250,
+                                            }}>
+                                            <Text style={{
+                                                color: 'black',
+                                                fontSize: 22,
+                                                textAlign: 'center',
+                                                marginTop: 60,
+                                                fontFamily: 'LobsterTwo-Regular',
+                                            }}>Lenguajes Dominados:</Text>
+                                            <View>
+                                                {languageOptions.map(language => (
+                                                    <View
+                                                        key={language.id}
                                                         style={{
-                                                            color: selectedLanguages.includes(language.id)
-                                                                ? 'black'
-                                                                : 'white',
+                                                            flexDirection: 'row',
+                                                            alignItems: 'center',
                                                         }}>
-                                                        ✓
-                                                    </Text>
-                                                </TouchableOpacity>
-                                                <Text>{language.name}</Text>
+                                                        <TouchableOpacity
+                                                            style={styles.checkbox}
+                                                            onPress={() => toggleLanguage(language.name)}>
+                                                            <Text
+                                                                style={{
+                                                                    color: selectedLanguages.includes(language.id)
+                                                                        ? 'black'
+                                                                        : 'white',
+                                                                }}>
+                                                                ✓
+                                                            </Text>
+                                                        </TouchableOpacity>
+                                                        <Text style={styles.dateText}>{language.name}</Text>
+                                                    </View>
+                                                ))}
                                             </View>
-                                        ))}
-                                    </View>
-                                </View> */}
+                                        </View>
+                                    }
                                     {/* Lista de checkboxes para seleccionar las areaSkills */}
-                                    {/* <View
-                                    style={{ marginTop: 15, alignItems: 'flex-start', width: 250 }}>
-                                    <Text>Habilidades en tu area:</Text>
-                                    <View>
-                                        {areaSkillsOptions.map(areaSkill => (
-                                            <View
-                                                key={areaSkill.id}
-                                                style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                <TouchableOpacity
-                                                    style={styles.checkbox}
-                                                    onPress={() => toggleAreaSkill(areaSkill.name)}>
-                                                    <Text
+                                    {
+                                        <View
+                                            style={{
+                                                marginTop: 15,
+                                                alignItems: 'flex-start',
+                                                width: 250,
+                                            }}>
+                                            <Text style={{
+                                                color: 'black',
+                                                fontSize: 24,
+                                                textAlign: 'center',
+                                                marginTop: 60,
+                                                fontFamily: 'LobsterTwo-Regular',
+                                            }}>Habilidades en tu area:</Text>
+                                            <View>
+                                                {areaSkillsOptions.map(areaSkill => (
+                                                    <View
+                                                        key={areaSkill.id}
                                                         style={{
-                                                            color: areaSkills.includes(areaSkill.id)
-                                                                ? 'black'
-                                                                : 'white',
+                                                            flexDirection: 'row',
+                                                            alignItems: 'center',
                                                         }}>
-                                                        ✓
-                                                    </Text>
-                                                </TouchableOpacity>
-                                                <Text>{areaSkill.name}</Text>
+                                                        <TouchableOpacity
+                                                            style={styles.checkbox}
+                                                            onPress={() => toggleAreaSkill(areaSkill.name)}>
+                                                            <Text
+                                                                style={{
+                                                                    color: areaSkills.includes(areaSkill.id)
+                                                                        ? 'black'
+                                                                        : 'white',
+                                                                }}>
+                                                                ✓
+                                                            </Text>
+                                                        </TouchableOpacity>
+                                                        <Text style={styles.dateText}>{areaSkill.name}</Text>
+                                                    </View>
+                                                ))}
                                             </View>
-                                        ))}
-                                    </View>
-                                </View> */}
+                                        </View>
+                                    }
 
                                     {/* Lista de checkboxes para seleccionar las softSkills */}
-                                    {/* <View
-                                    style={{ marginTop: 15, alignItems: 'flex-start', width: 250 }}>
-                                    <Text>Habilidades blandas:</Text>
-                                    <View>
-                                        {softSkillsOptions.map(softSkill => (
-                                            <View
-                                                softSkill={softSkill}
-                                                key={softSkill.id}
-                                                style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                <TouchableOpacity
-                                                    style={styles.checkbox}
-                                                    onPress={() => toggleSoftSkill(softSkill.name)}>
-                                                    <Text
+                                    {
+                                        <View
+                                            style={{
+                                                marginTop: 15,
+                                                alignItems: 'flex-start',
+                                                width: 250,
+                                            }}>
+                                            <Text style={{
+                                                color: 'black',
+                                                fontSize: 24,
+                                                textAlign: 'center',
+                                                marginTop: 60,
+                                                fontFamily: 'LobsterTwo-Regular',
+                                            }}>Habilidades blandas:</Text>
+                                            <View>
+                                                {softSkillsOptions.map(softSkill => (
+                                                    <View
+                                                        softSkill={softSkill}
+                                                        key={softSkill.id}
                                                         style={{
-                                                            color: softSkills.includes(softSkill.id)
-                                                                ? 'black'
-                                                                : 'white',
+                                                            flexDirection: 'row',
+                                                            alignItems: 'center',
                                                         }}>
-                                                        ✓
-                                                    </Text>
-                                                </TouchableOpacity>
-                                                <Text>{softSkill.name}</Text>
+                                                        <TouchableOpacity
+                                                            style={styles.checkbox}
+                                                            onPress={() => toggleSoftSkill(softSkill.name)}>
+                                                            <Text
+                                                                style={{
+                                                                    color: softSkills.includes(softSkill.id)
+                                                                        ? 'black'
+                                                                        : 'white',
+                                                                }}>
+                                                                ✓
+                                                            </Text>
+                                                        </TouchableOpacity>
+                                                        <Text style={styles.dateText}>{softSkill.name}</Text>
+                                                    </View>
+                                                ))}
+                                                <Text style={{ fontSize: 10, color: 'red' }}>
+                                                    {errors.softSkills}
+                                                </Text>
                                             </View>
-                                        ))}
-                                        <Text style={{ fontSize: 10, color: 'red' }}>
-                                            {errors.softSkills}
-                                        </Text>
-                                    </View>
-                                </View> */}
+                                        </View>
+                                    }
                                     {/* Botón de registro */}
                                     <TouchableOpacity onPress={handleSubmit} style={styles.button}>
                                         <Text>Editar</Text>
