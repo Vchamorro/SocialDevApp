@@ -38,26 +38,20 @@ export const Home = () => {
             <Header />
             <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
                 <View style={{ flex: 1 }}></View>
-                <View style={styles.container}>
-                    <View style={{ marginTop: 10 }}>
-                        <Text>wenas</Text>
-                        <FlatList
-                            showsVerticalScrollIndicator={false}
-                            scrollEnabled
-                            data={posts}
-                            renderItem={({item}) => <Post post={item} />}
-                            keyExtractor={item => item.id.toString()}
-                            style={styleList.flatList}
-                            contentContainerStyle={{ paddingBottom: 80 }}
-                            refreshControl={
-                                <RefreshControl
-                                    refreshing={refreshing}
-                                    onRefresh={onRefresh}/>
-                            }
-                        />
-                        <Text>wenas</Text>
-                    </View>
-                </View>
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    scrollEnabled
+                    data={posts}
+                    renderItem={({item}) => <Post post={item} />}
+                    keyExtractor={item => item.id.toString()}
+                    style={styleList.flatList}
+                    contentContainerStyle={{ paddingBottom: 80 }}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}/>
+                    }
+                />
                 <View style={{ flex: 1 }}></View>
             </SafeAreaView>
         </>

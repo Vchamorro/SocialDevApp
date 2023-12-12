@@ -26,6 +26,8 @@ export const AuthProvider = ({children}) => {
           user: data.user,
         },
       });
+      await AsyncStorage.setItem('token', data.token); // Almacenar el token del usuario.
+      getPosts();
     } catch (error) {
       console.log(error.response.data);
     }
@@ -72,6 +74,7 @@ export const AuthProvider = ({children}) => {
 
       // Almacenar el token del usuario.
       await AsyncStorage.setItem('token', data.token);
+      getPosts();
     } catch (error) {
       console.log(error.response.data.errors);
       dispatch({
@@ -92,13 +95,9 @@ export const AuthProvider = ({children}) => {
     dispatch({type: 'removeError'});
   };
 
-  useEffect(() => {
-    getPosts();
-  }, []);
 
   const getPosts = async () => {
     const token = await AsyncStorage.getItem('token');
-    console.log('wenas');
     console.log(token);
     try {
         const { data } = await userApi.get('posts',{
@@ -111,6 +110,7 @@ export const AuthProvider = ({children}) => {
 
     } catch (error) {
         console.log(error.response.data);
+        console.log(error.response.status);
     }
 }
 
