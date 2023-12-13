@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import DatePicker from 'react-native-date-picker';
+import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
 import {
   Formik,
@@ -28,6 +29,7 @@ import * as Yup from 'yup';
 import { languageOptions } from '../helpers/languages';
 
 export const Register = () => {
+  const navigation = useNavigation()
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
@@ -49,6 +51,10 @@ export const Register = () => {
   console.log(selectedLanguages);
   console.log(softSkills);
   console.log(areaSkills);
+
+  const volver = () => {
+    navigation.navigate('Login')
+}
 
   const { signUp } = useContext(AuthContext);
 
@@ -388,6 +394,9 @@ export const Register = () => {
                     onPress={handleSubmit}
                     style={styles.button}>
                     <Text>Registrarte</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={volver} style={styles.button}>
+                      <Text>Volver</Text>
                   </TouchableOpacity>
                   <View style={{ marginTop: 10 }}></View>
                 </View>

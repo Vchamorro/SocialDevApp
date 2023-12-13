@@ -16,6 +16,7 @@ import {
 import {
     useState,
 } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import DatePicker from 'react-native-date-picker'
 import { AuthContext } from '../context/AuthContext';
 import {
@@ -30,7 +31,7 @@ import {
 import * as Yup from 'yup';
 
 export const EditProfile = () => {
-
+    const navigation = useNavigation()
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
    
@@ -43,6 +44,10 @@ export const EditProfile = () => {
         password: Yup.string().required('El campo contraseña es requerido'),
         
     });
+
+    const volver = () => {
+        navigation.navigate('BottomNavigator')
+    }
 
     const { user } = useContext(AuthContext)
 
@@ -143,6 +148,9 @@ export const EditProfile = () => {
                                     {/* Botón de registro */}
                                     <TouchableOpacity onPress={handleSubmit} style={styles.button}>
                                         <Text>Editar</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={volver} style={styles.button}>
+                                        <Text>Volver</Text>
                                     </TouchableOpacity>
                                     <View style={{ marginTop: 10 }}></View>
                                 </View>
