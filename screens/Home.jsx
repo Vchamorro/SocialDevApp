@@ -77,32 +77,4 @@ const styleList = StyleSheet.create({
     }
   });
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    inputs: {
-        backgroundColor: 'lightgrey',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        color: 'black',
-        borderWidth: 1,
-        borderColor: 'black',
-        borderRadius: 15,
-        marginTop: 15,
-        width: 250
-    },
-    button: {
-        backgroundColor: 'black',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderWidth: 1,
-        borderColor: 'lightgrey',
-        borderRadius: 10,
-        marginTop: 15,
-        width: 200,
-        alignItems: 'center'
-    },
-});
+

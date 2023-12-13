@@ -15,13 +15,13 @@ import {
   Alert,
   Keyboard,
 } from 'react-native';
-import {useContext, useState} from 'react';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { useContext, useState } from 'react';
+import { launchImageLibrary } from 'react-native-image-picker';
 import axios from 'axios';
-import {userApi} from '../api/userApi';
-import {AuthContext} from '../context/AuthContext';
-import {useNavigation} from '@react-navigation/native';
-import {Header} from '../Components/Header';
+import { userApi } from '../api/userApi';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
+import { Header } from '../Components/Header';
 import {
   Formik,
   Form,
@@ -33,7 +33,7 @@ import {
 import * as Yup from 'yup';
 
 export const AddPost = () => {
-  const {user, token} = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
 
   const [image, setImage] = useState('https://via.placeholder.com/200');
   const [response, setResponse] = useState('');
@@ -100,7 +100,7 @@ export const AddPost = () => {
 
   const addPost = async (values, formikHelpers) => {
     Keyboard.dismiss();
-    const {url} = await uploadImage();
+    const { url } = await uploadImage();
     const post = {
       title: values.title,
       description: values.description,
@@ -110,13 +110,16 @@ export const AddPost = () => {
       comments: 0,
     };
     try {
-      const {data} = await userApi.post('/post', post, {
+      const { data } = await userApi.post('/post', post, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       console.log(data);
       Alert.alert('El post fue creado correctamente.');
+      values.title = '';
+      values.description = '';
+      image = setImage('https://via.placeholder.com/200');
     } catch (error) {
       console.log('Error en la solicitud:', error);
       console.log(error.response.data.errors);
@@ -143,7 +146,7 @@ export const AddPost = () => {
           setFieldTouched,
           handleSubmit,
         }) => (
-          <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+          <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
             <Text
               style={{
                 color: 'black',
@@ -164,7 +167,7 @@ export const AddPost = () => {
                 keyboardType="email-address"
                 style={styles.inputs}
               />
-              <Text style={{fontSize: 10, color: 'red', alignSelf: 'center'}}>
+              <Text style={{ fontSize: 10, color: 'red', alignSelf: 'center' }}>
                 {errors.title}
               </Text>
             </View>
@@ -178,7 +181,7 @@ export const AddPost = () => {
                 keyboardType="email-address"
                 style={styles.description}
               />
-              <Text style={{fontSize: 10, color: 'red', alignSelf: 'center'}}>
+              <Text style={{ fontSize: 10, color: 'red', alignSelf: 'center' }}>
                 {errors.description}
               </Text>
             </View>
@@ -194,7 +197,7 @@ export const AddPost = () => {
                   marginLeft: 20,
                   marginTop: 15,
                 }}
-                source={{uri: image}}
+                source={{ uri: image }}
               />
             </View>
             <TouchableOpacity
@@ -219,11 +222,11 @@ export const AddPost = () => {
                 Agregar Post
               </Text>
             </TouchableOpacity>
-            <View style={{flex: 1}}></View>
+            <View style={{ flex: 1 }}></View>
             <View style={styles.container}>
-              <View style={{marginTop: 10}}></View>
+              <View style={{ marginTop: 10 }}></View>
             </View>
-            <View style={{flex: 1}}></View>
+            <View style={{ flex: 1 }}></View>
           </SafeAreaView>
         )}
       </Formik>

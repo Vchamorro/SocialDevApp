@@ -12,26 +12,58 @@ const authInitialState = {
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, authInitialState);
   const [posts, setPosts] = useState([]);
 
-  const signIn = async (email, password) => {
+  useEffect(() => {
+    checkToken();
+  }, [])
+
+  const checkToken = async () => {
+    const token = await AsyncStorage.getItem('token');
+    console.log(token);
+    if (!token) return dispatch({ type: 'notAuthenticated' });
     try {
-      const {data} = await userApi.post('/login', {email, password});
+      const { data } = await userApi.get('/token/validate', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       dispatch({
-        type: 'signUp',
+        type: 'signIn',
         payload: {
           token: data.token,
           user: data.user,
-        },
-      });
-      await AsyncStorage.setItem('token', data.token); // Almacenar el token del usuario.
+        }
+      })
+    } catch (error) {
+      if (error.response.status === 401) {
+        dispatch({ type: 'notAuthenticated' });
+      }
+    }
+  }
+
+  const signIn = async (email, password) => {
+    try {
+      const { data } = await userApi.post('/login', { email, password });
+      dispatch({
+        type: 'signIn',
+        payload: {
+          token: data.token,
+          user: data.user,
+        }
+
+      })
+      console.log(data);
+      // Almacenar el token del usuario.
+      await AsyncStorage.setItem('token', data.token);
       getPosts();
     } catch (error) {
       console.log(error.response.data);
     }
-  };
+  }
+
 
   const signUp = async (
     name,
@@ -62,7 +94,7 @@ export const AuthProvider = ({children}) => {
         programming_languages_id: selectedLanguages,
       };
       console.log(userdates);
-      const {data} = await userApi.post('/register', userdates);
+      const { data } = await userApi.post('/register', userdates);
 
       dispatch({
         type: 'signUp',
@@ -92,9 +124,41 @@ export const AuthProvider = ({children}) => {
     });
   };
   const removeError = () => {
-    dispatch({type: 'removeError'});
+    dispatch({ type: 'removeError' });
   };
 
+  const updateUser = async (
+    name,
+    lastName,
+    password
+  ) => {
+    try {
+      const userdates = {
+        name: name,
+        last_name: lastName,
+        password: password,
+      };
+      
+      const { data } = await userApi.post(`/updateUser/${user.id}`, userdates);
+
+      dispatch({
+        type: 'updateUser',
+        payload: data.user,
+      });
+
+      // Almacenar el token del usuario.
+      await AsyncStorage.setItem('token', data.token);
+    }
+    catch (error) {
+      console.log(error.response.data.errors);
+      dispatch({
+        type: 'addError',
+        payload: error.response.data.errors,
+      });
+    }
+  }
+      
+      
 
   const getPosts = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -123,7 +187,8 @@ export const AuthProvider = ({children}) => {
         logOut,
         removeError,
         getPosts,
-        posts
+        posts,
+        updateUser
       }}>
       {children}
     </AuthContext.Provider>
